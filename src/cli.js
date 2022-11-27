@@ -15,7 +15,8 @@ function parseArgumentsIntoOptions(rawArgs){
         // coresponding the options with the args
         skipPromts: args['--yes'] || false,
         command: args._[0],
-        template: args._[1]
+        name: args._[1],
+        template: args._[2]
     }
 }
 
@@ -26,6 +27,13 @@ async function promptForMissingOptions(options){
         return {
             ...options, 
             command: options.command || defaultCommand,
+        }
+    }
+
+    if(options.skipPromts){
+        return {
+            ...options, 
+            name: options.name,
         }
     }
 
@@ -48,6 +56,14 @@ async function promptForMissingOptions(options){
         })
     }
 
+    if (!options.name){
+        questions.push({
+            type: 'input',
+            name: 'file_name',
+            message: 'Enter file name:',
+        })
+    }
+
     if (!options.template){
         questions.push({
             type: 'list',
@@ -63,11 +79,12 @@ async function promptForMissingOptions(options){
         ...options,
         command: options.command || answers.command,
         template: options.template || answers.template,
+        name: options.file_name || answers.file_name,
     }
 }
 
 export async function cli(args){
     let options = parseArgumentsIntoOptions(args)
     options = await promptForMissingOptions(options)
-    await.createProject(options)
+    console.log(options)
 }
