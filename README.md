@@ -3,8 +3,8 @@ NPM package that let's the user create, delete, manage  components, files, templ
 
 ## Usage
 ```console
-foo@bar:~$ adaptive-fs <command> [template] [options]
-foo
+foo@bar:~$ adaptive-fs <command> [name] [template] [options]
+name has been created successfully
 ```
 
 ## Commands
