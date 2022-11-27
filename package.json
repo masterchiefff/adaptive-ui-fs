@@ -1,0 +1,27 @@
+{
+  "name": "@sadatt254/adaptive-ui-fs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.js",
+  "bin": {
+    "@sadatt254/adaptive-fs": "bin/adaptive-fs",
+    "adaptive-fs": "bin/adaptive-fs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "keywords": [
+    "cli",
+    "adaptive-fs"
+  ],
+  "author": "Anwar Magara",
+  "license": "ISC",
+  "dependencies": {
+    "arg": "^5.0.2",
+    "esm": "^3.2.25",
+    "inquirer": "^9.1.4"
+  }
+}
