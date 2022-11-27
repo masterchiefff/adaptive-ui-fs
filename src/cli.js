@@ -14,26 +14,45 @@ function parseArgumentsIntoOptions(rawArgs){
     return {
         // coresponding the options with the args
         skipPromts: args['--yes'] || false,
-        template: args._[0]
+        command: args._[0],
+        template: args._[1]
     }
 }
 
 // handling missing options
 async function promptForMissingOptions(options){
+    const defaultCommand = 'create-component';
+    if(options.skipPromts){
+        return {
+            ...options, 
+            command: options.command || defaultCommand,
+        }
+    }
+
     const defaultTemplate = 'dsv1.0';
     if(options.skipPromts){
         return {
             ...options, 
-            template: options.template || defaultTemplate,
+            command: options.template || defaultTemplate,
         }
     }
 
     const questions = [];
+    if (!options.command){
+        questions.push({
+            type: 'list',
+            name: 'command',
+            message: 'Please choose project\'s command to use',
+            choices: ['create-component', 'delete-component', 'rename-component', 'create-template', 'delete-template'],
+            default: defaultCommand,
+        })
+    }
+
     if (!options.template){
         questions.push({
             type: 'list',
             name: 'template',
-            message: 'Please choose which project template to use',
+            message: 'Please choose which project theme to use',
             choices: ['bulkit', 'dsv1.0', 'dsv2.0'],
             default: defaultTemplate,
         })
@@ -42,6 +61,7 @@ async function promptForMissingOptions(options){
     const answers = await inquirer.prompt(questions);
     return {
         ...options,
+        command: options.command || answers.command,
         template: options.template || answers.template,
     }
 }
