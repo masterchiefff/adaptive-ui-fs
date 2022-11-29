@@ -13,6 +13,9 @@ const access = promisify(fs.access);
 async function createThemeFiles(options){
     const targetWorkingDirectory = options.targetDirectory;
     const componentPath = path.resolve(path.join(targetWorkingDirectory, `/src/theme/${options.theme}/components/elements`))
+    const fileDir = path.resolve(path.join(targetWorkingDirectory, `/src/themes/${options.theme}/components/elements/${formatted}/${fileName}`));
+    const cssDIr = path.resolve(path.join(targetWorkingDirectory, `/src/themes/${option.theme}/components/elements/${formatted}/${cssFile}`));
+    const baseDir = path.resolve(path.join(targetWorkingDirectory, `/src/elements/base/${baseName}`));
 
     try {
        if(isDirSync(path.resolve(path.join(targetWorkingDirectory, '/src/themes/', options.theme)))){
@@ -55,8 +58,6 @@ export async function createComponent(options){
         process.exit(1);
     }
 
-    await createThemeFiles(options);
-
     const tasks = new Listr ([
         {
             title: 'Creating files',
@@ -78,7 +79,7 @@ export async function createComponent(options){
 
     await tasks.run();
 
-    console.log(`${bold().green('DONE')} - project ready`)
+    console.log(`${bold().green('DONE')} ${options.name} component has been created successfully`)
 
     return true;
 }
