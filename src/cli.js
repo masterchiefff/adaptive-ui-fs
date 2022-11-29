@@ -1,5 +1,6 @@
 import arg from 'arg'; // allows us to process arguments into options
 import inquirer from 'inquirer'; // questions
+import { adaptiveFs } from './app';
 
 // this function takes the argument and processing them into options
 function parseArgumentsIntoOptions(rawArgs){
@@ -16,7 +17,7 @@ function parseArgumentsIntoOptions(rawArgs){
         skipPromts: args['--yes'] || false,
         command: args._[0],
         name: args._[1],
-        template: args._[2]
+        theme: args._[2]
     }
 }
 
@@ -37,11 +38,11 @@ async function promptForMissingOptions(options){
         }
     }
 
-    const defaultTemplate = 'dsv1.0';
+    const defaultTheme = 'dsv1.0';
     if(options.skipPromts){
         return {
             ...options, 
-            command: options.template || defaultTemplate,
+            command: options.theme || defaultTheme,
         }
     }
 
@@ -51,7 +52,7 @@ async function promptForMissingOptions(options){
             type: 'list',
             name: 'command',
             message: 'Please choose project\'s command to use',
-            choices: ['create-component', 'delete-component', 'rename-component', 'create-template', 'delete-template'],
+            choices: ['create-component', 'delete-component', 'rename-component', 'create-theme', 'delete-theme'],
             default: defaultCommand,
         })
     }
@@ -64,13 +65,13 @@ async function promptForMissingOptions(options){
         })
     }
 
-    if (!options.template){
+    if (!options.theme){
         questions.push({
             type: 'list',
-            name: 'template',
+            name: 'theme',
             message: 'Please choose which project theme to use',
             choices: ['bulkit', 'dsv1.0', 'dsv2.0'],
-            default: defaultTemplate,
+            default: defaultTheme,
         })
     }
 
@@ -78,7 +79,7 @@ async function promptForMissingOptions(options){
     return {
         ...options,
         command: options.command || answers.command,
-        template: options.template || answers.template,
+        theme: options.theme || answers.theme,
         name: options.file_name || answers.file_name,
     }
 }
@@ -86,5 +87,5 @@ async function promptForMissingOptions(options){
 export async function cli(args){
     let options = parseArgumentsIntoOptions(args)
     options = await promptForMissingOptions(options)
-    console.log(options)
+    await adaptiveFs(options);
 }
