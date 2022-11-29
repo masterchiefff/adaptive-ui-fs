@@ -1,3 +1,4 @@
+import fs from 'fs';
 export function isDirSync(aPath) {
     try {
         return fs.statSync(aPath).isDirectory();

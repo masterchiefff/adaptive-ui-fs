@@ -3,12 +3,14 @@ import path from 'path';
 import ncp from 'ncp';
 import { promisify } from 'util';
 import { isDirSync } from './syncdir';
-import { bold, red, blue } from 'kleur';
+import { bold, red, blue, green } from 'kleur';
+import Listr from 'listr';
+import { projectInstall } from 'pkg-install';
 
 const access = promisify(fs.access);
-const copy = promisify(ncp);
+// const copy = promisify(ncp);
 
-async function copyThemeFiles(options){
+async function createThemeFiles(options){
     const targetWorkingDirectory = options.targetDirectory;
     const componentPath = path.resolve(path.join(targetWorkingDirectory, `/src/theme/${options.theme}/components/elements`))
 
@@ -17,6 +19,8 @@ async function copyThemeFiles(options){
         // return copy(options.themeDirectory, options.targetDirectory, {
         //     clobber: false
         // })
+
+        console.log('Creating component...')
        }
 
     } catch (err){
@@ -24,6 +28,11 @@ async function copyThemeFiles(options){
         process.exit(1)
     }
 }
+
+async function copyFilesContent(){
+    console.log('')
+}
+
 export async function createComponent(options){
     options = {
         ...options, 
@@ -46,7 +55,30 @@ export async function createComponent(options){
         process.exit(1);
     }
 
-    await copyThemeFiles(options);
+    await createThemeFiles(options);
+
+    const tasks = new Listr ([
+        {
+            title: 'Creating files',
+            task: () => createThemeFiles(options)
+        },
+        {
+            title: 'Copying file\s content',
+            task: () => copyFilesContent(),
+            enabled: () => options.copy,
+        },
+        {
+            title: 'install dependancies',
+            task: () => projectInstall({
+                cwd: options.targetDirectory,
+            }),
+            skip: () => !options.runInstall ? 'Dependancies installation skipped' : undefined
+        }
+    ])
+
+    await tasks.run();
+
+    console.log(`${bold().green('DONE')} - project ready`)
 
     return true;
 }
