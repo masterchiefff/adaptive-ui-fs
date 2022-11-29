@@ -2,34 +2,25 @@ import fs from 'fs';
 import path from 'path';
 import ncp from 'ncp';
 import { promisify } from 'util';
+import { isDirSync } from './syncdir';
+import { bold, red, blue } from 'kleur';
 
 const access = promisify(fs.access);
 const copy = promisify(ncp);
 
-function isDirSync(aPath) {
-    try {
-        return fs.statSync(aPath).isDirectory();
-    } catch (e) {
-        if (e.code === 'ENONET') {
-            return false;
-        } else {
-            throw e
-        }
-    }
-}
-
 async function copyThemeFiles(options){
-    let dir;
-    const targetCwd = options.targetDirectory;
+    const targetWorkingDirectory = options.targetDirectory;
+    const componentPath = path.resolve(path.join(targetWorkingDirectory, `/src/theme/${options.theme}/components/elements`))
 
     try {
-       if(isDirSync(path.resolve(path.join('./', '/src/themes/', options.theme)))){
-        return copy(options.themeDirectory, options.targetDirectory, {
-            clobber: false
-        })
+       if(isDirSync(path.resolve(path.join(targetWorkingDirectory, '/src/themes/', options.theme)))){
+        // return copy(options.themeDirectory, options.targetDirectory, {
+        //     clobber: false
+        // })
        }
+
     } catch (err){
-        console.log('Component can\'t be created in the current directory, Please Make sure you are in adaptive-ui-web-master directory')
+        console.log(`${bold().red('ERROR')} Component can\'t be created in the current directory, Please Make sure you are in ${blue().bold().underline('adaptive-ui-web-master')} directory`)
         process.exit(1)
     }
 }
@@ -56,7 +47,6 @@ export async function createComponent(options){
     }
 
     await copyThemeFiles(options);
-    console.log('project is ready');
 
     return true;
 }

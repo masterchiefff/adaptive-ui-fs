@@ -6,7 +6,9 @@ import { adaptiveFs } from './app';
 function parseArgumentsIntoOptions(rawArgs){
     const args= arg({
             '--yes': Boolean, // skip all the prompts and use defaults
-            '-y': '--yes' 
+            '--copy': Boolean,
+            '-y': '--yes' ,
+            '-c': '--copy'
         },
         {
             argv: rawArgs.slice(2), // all the arguments will start at position number 3 eg create-component dsv1.0 --yes [component-name]
@@ -15,6 +17,7 @@ function parseArgumentsIntoOptions(rawArgs){
     return {
         // coresponding the options with the args
         skipPromts: args['--yes'] || false,
+        copy: args['--copy'] || false,
         command: args._[0],
         name: args._[1],
         theme: args._[2]
@@ -65,6 +68,7 @@ async function promptForMissingOptions(options){
         })
     }
 
+
     if (!options.theme){
         questions.push({
             type: 'list',
@@ -75,11 +79,21 @@ async function promptForMissingOptions(options){
         })
     }
 
+    if (!options.copy) {
+        questions.push({
+            type: 'confirm', 
+            name: 'copy',
+            message: 'Copy file content?',
+            default: false
+        })
+    }
+
     const answers = await inquirer.prompt(questions);
     return {
         ...options,
         command: options.command || answers.command,
         theme: options.theme || answers.theme,
+        copy: options.copy || answers.copy,
         name: options.file_name || answers.file_name,
     }
 }
