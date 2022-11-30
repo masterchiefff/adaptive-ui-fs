@@ -1,6 +1,6 @@
-const toCamelCase = require('../formating');
+const toCamelCase = require('../src/formating');
 
-export async function baseFile(fileName, theme){
+export async function baseFile(fileName){
     const isFormatting = () =>{
         if(fileName.includes('-')){
             return fileName;
