@@ -8,7 +8,7 @@ function strArr(str){
     }
 }
 
-export const toCamelCase = (str) => {
+export default function toCamelCase(str) {
     let arrToStr = strArr(str).toString();
     return arrToStr.replace(/\,/g, '');
 }

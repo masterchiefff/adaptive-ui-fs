@@ -1,4 +1,4 @@
-import { toCamelCase } from "../src/file-formatting";
+import toCamelCase  from "../src/formating";
 
 export function baseFile(fileName){
     const isFormatting = () =>{
