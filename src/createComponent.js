@@ -14,11 +14,14 @@ async function createThemeFiles(options, copy){
     const baseName = `${fileFormated}.js`;
     const fileName = `${fileFormated}.js`;
     const baseDir = path.resolve(path.join(targetWorkingDirectory, `/src/elements/base/${baseName}`));
-    const componentsPath = path.resolve(path.join(targetWorkingDirectory, `/src/theme/${options.theme}/components/elements/`))
     const fileDir = path.resolve(path.join(targetWorkingDirectory, `/src/themes/${options.theme}/components/elements/${fileName}`));
     
     // Creating basefile
     if(isDirSync(path.resolve(path.join(targetWorkingDirectory, '/src/elements/base/')))){
+        if(copy){
+            fs.createWriteStream(baseDir);
+            fs.writeFileSync(baseDir, baseFile(options.name, options.theme), { encoding: "utf-8"});
+        }
         fs.createWriteStream(baseDir);
     }else{
         console.log(false)
@@ -38,7 +41,7 @@ async function createThemeFiles(options, copy){
                         if(err) {
                             return console.log(err);
                         }
-                        console.log("The file was saved!");
+                        console.log(`${bold().green('DONE')} File content copied`);
                     }); 
 
                 }
