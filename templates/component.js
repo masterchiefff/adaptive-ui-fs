@@ -1,7 +1,7 @@
-const toCamelCase = require('../formating');
-const styles = require('./styles');
+import { toCamelCase } from "../src/file-formatting";
+// const styles = require('./styles');
 
-export async function componentFile(fileName, theme){
+export default function componentFile(fileName){
     const isFormatting = () =>{
         if(fileName.includes('-')){
             return fileName;
@@ -31,5 +31,5 @@ export async function componentFile(fileName, theme){
     customElements.define(${toCamelCase(fileName)}.is, ${toCamelCase(fileName)});
     
     `;
-    return await template;
+    return template;
 }
