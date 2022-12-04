@@ -16,47 +16,52 @@ async function createThemeFiles(options, copy){
     const baseDir = path.resolve(path.join(targetWorkingDirectory, `/src/elements/base/${baseName}`));
     const fileDir = path.resolve(path.join(targetWorkingDirectory, `/src/themes/${options.theme}/components/elements/${fileName}`));
     
-    // Creating basefile
-    if(isDirSync(path.resolve(path.join(targetWorkingDirectory, '/src/elements/base/')))){
-        if(copy){
-            fs.createWriteStream(baseDir);
-            fs.writeFile(baseDir, baseFile(options.name, options.theme), function(err) {
-                if(err) {
-                    return console.log(err);
-                }
-                console.log(`${bold().green('DONE')} File content copied`);
-            }); 
-        }
-        fs.createWriteStream(baseDir);
+    if (targetWorkingDirectory != path.resolve(path.join(targetWorkingDirectory, '../adaptive-ui-web'))) {
+        console.log(`${bold().red('LOCATION ERROR')} Please navigate to adaptive-ui-web folder`)
+        process.exit(1)
     }else{
-        console.log(false)
-    }
-
-    // Creating component files
-    try {
-        if (isDirSync(path.resolve(path.join(targetWorkingDirectory, `/src/themes/${options.theme}/components/elements/`)))){
-            if (options.name.split('-').length > 4){
-                console.log('Naming error');
-                process.error(1)
-            }else{
-                if(copy){
-                    fs.createWriteStream(fileDir);
-
-                    fs.writeFile(fileDir, component(options.name), function(err) {
-                        if(err) {
-                            return console.log(err);
-                        }
-                        console.log(`${bold().green('DONE')} File content copied`);
-                    }); 
-
-                }
-                fs.createWriteStream(fileDir);
+            // Creating basefile
+        if(isDirSync(path.resolve(path.join(targetWorkingDirectory, '/src/elements/base/')))){
+            if(copy){
+                fs.createWriteStream(baseDir);
+                fs.writeFile(baseDir, baseFile(options.name, options.theme), function(err) {
+                    if(err) {
+                        return console.log(err);
+                    }
+                    console.log(`${bold().green('DONE COPYING')} ${baseName} base file content copied`);
+                }); 
             }
-        }else {
-            console.log('the directory does not exist')
+            fs.createWriteStream(baseDir);
+        }else{
+            console.log(false)
         }
-    } catch (error) {
-        console.log(error);
+
+        // Creating component files
+        try {
+            if (isDirSync(path.resolve(path.join(targetWorkingDirectory, `/src/themes/${options.theme}/components/elements/`)))){
+                if (options.name.split('-').length > 4){
+                    console.log('Naming error');
+                    process.exit(1)
+                }else{
+                    if(copy){
+                        fs.createWriteStream(fileDir);
+
+                        fs.writeFile(fileDir, component(options.name), function(err) {
+                            if(err) {
+                                return console.log(err);
+                            }
+                            console.log(`${bold().green('DONE COPYING')} ${fileName} component file content copied`);
+                        }); 
+
+                    }
+                    fs.createWriteStream(fileDir);
+                }
+            }else {
+                console.log('the directory does not exist')
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
