@@ -70,6 +70,13 @@ export async function createComponent(options) {
             title: 'Copying file\s content',
             task: () => createThemeFiles(options, options.copy),
             enabled: () => options.copy,
+        },
+        {
+            title: 'install dependancies',
+            task: () => projectInstall({
+                cwd: options.targetDirectory,
+            }),
+            skip: () => !options.runInstall ? 'Dependancies installation skipped' : undefined
         }
     ])
 

@@ -1,4 +1,7 @@
+import { bold, yellow } from 'kleur';
+
 import { createComponent } from "./createComponent";
+import { deleteComponent } from "./deleteComponent";
 
 export async function adaptiveFs(options){
     switch (options.command) {
@@ -6,13 +9,10 @@ export async function adaptiveFs(options){
             await createComponent(options)
             break;
         case 'delete-component':
-            console.log('deleting component')
-            break;
-        case 'rename-component':
-            console.log('renaming component')
+            await deleteComponent(options)
             break;
         default:
-            console.log('To be worked on')
+            console.log(`${bold().yellow('TO BE WORKED ON')} - ${bold(options.command)} is not avilable at the moment. Please create an issue if you want this to be implemented.`)
             break;
     }
 }
