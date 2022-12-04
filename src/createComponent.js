@@ -3,14 +3,14 @@ import path from 'path';
 import { bold, red, blue, green } from 'kleur';
 import Listr from 'listr';
 
-import { toCamelCase } from './file-formatting';
+import { strArr } from './file-formatting';
 import { isDirSync } from './syncdir';
 import { baseFile } from '../templates/base';
 import component from '../templates/component';
 
 async function createThemeFiles(options, copy){
     const targetWorkingDirectory = options.targetDirectory;
-    const fileFormated = toCamelCase(options.name);
+    const fileFormated = strArr(options.name);
     const baseName = `${fileFormated}.js`;
     const fileName = `${fileFormated}.js`;
     const baseDir = path.resolve(path.join(targetWorkingDirectory, `/src/elements/base/${baseName}`));
