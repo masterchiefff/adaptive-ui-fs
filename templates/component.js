@@ -1,4 +1,4 @@
-import { toCamelCase } from "../src/file-formatting";
+import toCamelCase  from "../src/formating";
 // const styles = require('./styles');
 
 export default function componentFile(fileName){
