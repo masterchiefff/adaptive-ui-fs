@@ -13,7 +13,7 @@ async function deleteThemeFiles(options){
 
     if (!isDirSync(path.resolve(path.join(targetWorkingDirectory, `/src/themes/${options.theme}/components/elements/${options.name}.js`)))){
         console.log('The file does not exist');
-        process.error(1)
+        process.exit(1)
     }else{
         file.remove(path.resolve(path.join(targetWorkingDirectory, `/src/themes/${options.theme}/components/elements/${options.name}.js`)), function (err){
             if (err) return console.error("err");
