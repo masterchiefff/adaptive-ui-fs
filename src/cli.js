@@ -20,12 +20,14 @@ function parseArgumentsIntoOptions(rawArgs){
         copy: args['--copy'] || false,
         command: args._[0],
         name: args._[1],
-        theme: args._[2]
+        theme: args._[2],
+        newFile: ''
     }
 }
 
 // handling missing options
 async function promptForMissingOptions(options){
+
     const defaultCommand = 'create-component';
     if(options.skipPromts){
         return {
@@ -46,6 +48,13 @@ async function promptForMissingOptions(options){
         return {
             ...options, 
             command: options.theme || defaultTheme,
+        }
+    }
+
+    if(options.newFile){
+        return {
+            ...options, 
+            command: options.newFile,
         }
     }
 
@@ -84,7 +93,17 @@ async function promptForMissingOptions(options){
             type: 'confirm', 
             name: 'copy',
             message: 'Copy file content?',
-            default: false
+            default: false,
+            when: ( options ) => options.command == 'rename-component' || options.command != 'delete-compoenent'
+        })
+    }
+
+    if ( options.command ){
+        questions.push({
+            type: 'input', 
+            name: 'newFile',
+            message: 'Enter new file name',
+            when: ( options ) => options.command != 'rename-component' || options.command != 'delete-component'
         })
     }
 
@@ -95,6 +114,7 @@ async function promptForMissingOptions(options){
         theme: options.theme || answers.theme,
         copy: options.copy || answers.copy,
         name: options.name || answers.name,
+        newFile: options.newFile || answers.newFile,
     }
 }
 
