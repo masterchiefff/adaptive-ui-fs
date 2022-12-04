@@ -63,7 +63,7 @@ async function promptForMissingOptions(options){
     if (!options.name){
         questions.push({
             type: 'input',
-            name: 'file_name',
+            name: 'name',
             message: 'Enter file name:',
         })
     }
@@ -94,7 +94,7 @@ async function promptForMissingOptions(options){
         command: options.command || answers.command,
         theme: options.theme || answers.theme,
         copy: options.copy || answers.copy,
-        name: options.file_name || answers.file_name,
+        name: options.name || answers.name,
     }
 }
 

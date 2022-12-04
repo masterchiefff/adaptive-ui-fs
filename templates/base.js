@@ -1,6 +1,6 @@
-const toCamelCase = require('../src/formating');
+import { toCamelCase } from "../src/file-formatting";
 
-export async function baseFile(fileName){
+export function baseFile(fileName){
     const isFormatting = () =>{
         if(fileName.includes('-')){
             return fileName;
@@ -8,6 +8,7 @@ export async function baseFile(fileName){
             return fileName + "-element";
         }
     }
+    
     const template = `
     import {dataSourceMixin} from '../../core/mixins/datasource-mixin'
     import {BaseElement} from '../../core/base-element';
@@ -27,5 +28,5 @@ export async function baseFile(fileName){
     }
     `
 
-    return await template;
+    return template;
 }
